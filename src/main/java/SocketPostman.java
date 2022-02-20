@@ -31,7 +31,6 @@ public class SocketPostman {
         this.inArray = inArray;
         this.outArray = outArray;
         globalBuffer = new byte[inArray.length * 10]; // динамический рост буффера относительно длины входного пакета
-        System.out.println("Подключение к " + ipAddress + " на порт " + port);
         client = new Socket(ipAddress, port);
         connectStatus = true;
         clientTask();
@@ -45,6 +44,13 @@ public class SocketPostman {
         return dataExchange;
     }
 
+    public final short[] getInArrayLink(){
+        return inArray;
+    }
+
+    public final short[] getOutArrayLink(){
+        return outArray;
+    }
 
     public void clientTask() throws IOException {
         byte[] buffer = new byte[globalBuffer.length];
@@ -168,48 +174,4 @@ public class SocketPostman {
             return;
         }
     }
-
-
-    public static void main(String[] args) throws IOException, InterruptedException {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formatDateTime = now.format(formatter);
-
-        Scanner scanner = new Scanner(System.in);
-
-        short[] inArray = new short[15];
-        short[] outArray = new short[3];
-        try {
-            SocketPostman socketPostman = new SocketPostman(args[0], Integer.parseInt(args[1]), inArray, outArray);
-            System.out.println("Связь с сервером установлена !");
-
-            while (socketPostman.isConnected()) {
-                Thread.sleep(1000);
-                if (socketPostman.isDataExchange()) { // проверка на наличие обмена
-                    System.out.println("________________________________________________");
-                    System.out.println("Состояние: " + inArray[0]);
-                    System.out.println("Температура топлива: " + inArray[1]);
-                    System.out.println("Ошибка: " + inArray[7]);
-                    System.out.println("Время: " );
-
-                } else {
-                    System.out.println("________________________________________________");
-                    System.out.println("Состояние: нет обменна с горелкой");
-                    System.out.println("Температура топлива: нет данных");
-                    System.out.println("Ошибка: нет данных");
-                    System.out.println("Время: " );
-                }
-
-                if (scanner.hasNextLine()) {
-                    String str = scanner.nextLine();
-                }
-            }
-            System.out.println("Произошел разрыв соединения!");
-
-        }catch (Exception e){
-            System.out.println("Сервер недоступен!");
-        }
-
-    }
-
 }
