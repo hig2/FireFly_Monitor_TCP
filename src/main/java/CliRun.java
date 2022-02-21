@@ -1,20 +1,20 @@
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Scanner;
-
 
 public class CliRun {
+    private static CliRun cliRun;
     SocketPostman socketPostman;
 
-    public CliRun(SocketPostman socketPostman){
+    private CliRun(SocketPostman socketPostman){
         this.socketPostman = socketPostman;
-            //init controller
-            //run thread
+        renderThread();
+    }
+    public static void startListInfo(SocketPostman socketPostman){
+        cliRun = new CliRun(socketPostman);
     }
 
-    public void showLocalDataTime(){
+    private void showLocalDataTime(){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formatDateTime = now.format(formatter);
@@ -23,7 +23,7 @@ public class CliRun {
     }
 
 
-    public void showErrorStatus(int errorCode){
+    private void showErrorStatus(int errorCode){
         System.out.print("Ошибка №"+ errorCode + ": ");
         switch (errorCode){
             case 0: System.out.println("Нет ошибки.");
@@ -42,16 +42,16 @@ public class CliRun {
                 break;
             case 7: System.out.println("Обрыв датчика температуры котла.");
                 break;
-            default: System.out.println("Не опознана.");
+            default: System.out.println("Не определена.");
 
         }
     }
 
-    public void showDivLine(){
+    private void showDivLine(){
         System.out.println("_______________________________");
     }
 
-    public void showStatus(int status){
+    private void showStatus(int status){
         System.out.println("Статус: ");
         switch (status){
             case 0: System.out.println("Ожидание.");
@@ -63,6 +63,44 @@ public class CliRun {
             default: System.out.println("Не определен.");
 
         }
+    }
+
+    private void renderNoDataMessage(){
+        showDivLine();
+        System.out.println("Нет данных.");
+    }
+
+    private void renderThread()  {
+        Thread thread = new Thread(() -> {
+            while (socketPostman.isConnected()) {
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (socketPostman.isDataExchange()) { // проверка на наличие обмена
+                    renderListInfo();
+                } else {
+                    renderNoDataMessage();
+                }
+            }
+        });
+        thread.start();
+    }
+
+    private void renderListInfo(){
+        showDivLine();
+        showStatus(socketPostman.getInArrayLink()[0]);
+        showFuelTemperatureSensor(socketPostman.getInArrayLink()[1]);
+        showErrorStatus(socketPostman.getInArrayLink()[7]);
+        showDepulsatorLevelSensor(socketPostman.getInArrayLink()[2]);
+        showBufferTankLevelSensor(socketPostman.getInArrayLink()[3]);
+        showFireSensor(socketPostman.getInArrayLink()[4]);
+        showHoldingFuelTemperature(socketPostman.getInArrayLink()[8]);
+        showSoftWareVersion(socketPostman.getInArrayLink()[9]);
+        showLocalDataTime();
+
     }
 
     private void showFuelTemperatureSensor(int fuelTempSensor){
@@ -78,7 +116,7 @@ public class CliRun {
     }
 
     private void showFireSensor(int fireSensor){
-        System.out.println("Датчик уровня топлива буферного бака: " + (fireSensor == 1 ? "Есть пламя." : "Нет пламени."));
+        System.out.println("Датчик пламени: " + (fireSensor == 1 ? "Есть пламя." : "Нет пламени."));
     }
 
     private void showHoldingFuelTemperature(int HoldingFuelTemperature){
@@ -89,29 +127,20 @@ public class CliRun {
         System.out.println("Версия ПО: " + showSoftWareVersion);
     }
 
-
     public static void main(String[] args) {
         String ipAddress = args[0];
         int port = Integer.parseInt(args[1]);
-        short[] inArray = new short[15];
-        short[] outArray = new short[3];
 
         try {
             System.out.println("Подключение к " + ipAddress + " на порт " + port);
-            SocketPostman socketPostman = new SocketPostman(ipAddress, port, inArray, outArray);
+            SocketPostman socketPostman = new SocketPostman(ipAddress, port, new short[15], new short[3]);
             System.out.println("Связь с сервером установлена !");
+            CliRun.startListInfo(socketPostman);
 
             while (socketPostman.isConnected()) {
-                Thread.sleep(1000);
-                if (socketPostman.isDataExchange()) { // проверка на наличие обмена
-
-                } else {
-
-                }
-
+                Thread.sleep(20);
             }
             System.out.println("Произошел разрыв соединения!");
-
         }catch (Exception e){
             System.out.println("Сервер недоступен!");
         }
