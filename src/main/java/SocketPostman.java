@@ -161,14 +161,14 @@ public class SocketPostman {
 
         if (bufferArray[bufferArray.length - 1] == crc) {
             //все ок
+            System.arraycopy(bufferArray, 0, inArray, 0, inArray.length);
 
-            for (int i = 0; i < inArray.length; i++) {
-                inArray[i] = bufferArray[i];
-            }
             return;
         } else {
             // была ошибка crc
             return;
         }
     }
+
+
 }
