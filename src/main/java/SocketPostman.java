@@ -9,7 +9,12 @@ import java.io.IOException;
 public class SocketPostman {
     static private Socket client;
     private final short[] inArray;
-    private short[] outArray;
+    private final short[] outArray;
+    private final SocketPostmanTaskTypeList typeTask;
+    AtomicLong t = new AtomicLong(0);
+    private final DataInputStream dataInputStream;
+    private final DataOutputStream dataOutputStream;
+    private int timeOutToWriteMessage = 1000;
 
     private boolean connectStatus = false;
     private boolean dataExchange = false;
@@ -24,19 +29,22 @@ public class SocketPostman {
     private boolean startReadFlag = false;
     private int realByte = 0;
 
-    public SocketPostman(String ipAddress, int port, short[] inArray, short[] outArray) throws IOException {
+    public SocketPostman(String ipAddress, int port, short[] inArray, short[] outArray, SocketPostmanTaskTypeList typeTask) throws IOException {
         this.inArray = inArray;
         this.outArray = outArray;
         globalBuffer = new byte[inArray.length * 10]; // динамический рост буффера относительно длины входного пакета
         client = new Socket(ipAddress, port);
         connectStatus = true;
-        clientTask();
-
+        this.typeTask = typeTask;
+        dataInputStream = new DataInputStream(client.getInputStream());
+        dataOutputStream = new DataOutputStream(client.getOutputStream());
+        startTask();
     }
 
     public final boolean isConnected() {
         return connectStatus;
     }
+
     public final  boolean isDataExchange(){
         return dataExchange;
     }
@@ -49,21 +57,82 @@ public class SocketPostman {
         return outArray;
     }
 
-    public void clientTask() throws IOException {
-        byte[] buffer = new byte[globalBuffer.length];
-        DataInputStream in = new DataInputStream(client.getInputStream());
-        AtomicLong t = new AtomicLong(0);
-        int delay = 5000;
+    public final void setTimeOutToWriteMessage(int timeOutToWriteMessage){
+        this.timeOutToWriteMessage = timeOutToWriteMessage;
+    }
+
+    public void writeSymbolMessage() throws IOException {
+        dataOutputStream.writeUTF(getMessage());
+    }
+
+    private String getMessage() throws IOException {
+        short crc = 0;
+        String result = String.valueOf(startSymbol);
+
+        for (int i = 0; i < (outArray.length - 1); i++) {
+            crc += outArray[i];
+        }
+
+        for (int i = 0; i < outArray.length; i++) {
+            result = i == (outArray.length - 1) ? result + crc + finishSymbol + '\n' : result + outArray[i] + separatorSymbol;
+        }
+
+        return result;
+    }
+
+
+    private void readSymbolArrayMod(byte[] buffer) throws IOException {
+        t.set(System.currentTimeMillis());
+        int numByte = dataInputStream.read(buffer);
+        if(parseBuffer(buffer, numByte)){
+            dataExchange = true;
+        }
+    }
+
+    private void readSymbolArrayBoomerangSlaveMod(byte[] buffer) throws IOException {
+        t.set(System.currentTimeMillis());
+        int numByte = dataInputStream.read(buffer);
+        if(parseBuffer(buffer, numByte)){
+            dataExchange = true;
+            dataOutputStream.writeUTF(getMessage());
+        }
+    }
+
+
+
+    private void startTask() throws IOException {
+        byte[] buffer = new byte[inArray.length * 10];
+        final int delay = 3500;
 
         Thread thread = new Thread(() -> {
             while (connectStatus) {
                 try {
                     Thread.sleep(20);
-                        t.set(System.currentTimeMillis());
-                        int numByte = in.read(buffer);
+                    switch (typeTask){
+                        case READ_SYMBOL_ARRAY: readSymbolArrayMod(buffer); // только чтение (символьный поток)
+                            break;
+                        case READ_SYMBOL_ARRAY_BOOMERANG_SLAVE: readSymbolArrayBoomerangSlaveMod(buffer); // чтение и запись (полноценный режим) в роли ведомого (символьный поток)
+                            break;
+                        case READ_SYMBOL_ARRAY_BOOMERANG_MASTER: // чтение и запись (полноценный режим) в роли ведущего (символьный поток)
+                            break;
+                        case  READ_BYTE_ARRAY: // только чтение (байт поток)
+                            break;
+                        case  READ_BYTE_ARRAY_BOOMERANG_SLAVE: // чтение и запись (байт поток) в роли ведомого
+                            break;
+                        case  READ_BYTE_ARRAY_BOOMERANG_MASTER: // чтение и запись (байт поток) в роли ведущего
+                            break;
+                    }
+                    /*
+                    t.set(System.currentTimeMillis());
+                    int numByte = dataInputStream.read(buffer);
                     if(parseBuffer(buffer, numByte)){
                         dataExchange = true;
+                        if(typeTask == SocketPostmanTaskTypeList.READ_BYTE_ARRAY_BOOMERANG){
+                            //операция отправки
+                        }
                     }
+
+                     */
                 } catch (Exception e) {
                     e.printStackTrace();
                     connectStatus = false;
@@ -89,9 +158,8 @@ public class SocketPostman {
         timerWatcher.start();
     }
 
-    public Socket getClient() {
-        return client;
-    }
+
+
 
     private boolean parseBuffer(byte[] buffer, int numByte) throws IOException {
 

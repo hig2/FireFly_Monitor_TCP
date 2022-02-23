@@ -10,8 +10,9 @@ public class CliRun {
         this.socketPostman = socketPostman;
         renderThread();
     }
-    public static void startListInfo(SocketPostman socketPostman){
+    public static CliRun startListInfo(SocketPostman socketPostman){
         cliRun = new CliRun(socketPostman);
+        return cliRun;
     }
 
     private void showLocalDataTime(){
@@ -85,6 +86,7 @@ public class CliRun {
                     renderNoDataMessage();
                 }
             }
+            System.out.println("Произошел разрыв соединения!");
         });
         thread.start();
     }
@@ -133,14 +135,9 @@ public class CliRun {
 
         try {
             System.out.println("Подключение к " + ipAddress + " на порт " + port);
-            SocketPostman socketPostman = new SocketPostman(ipAddress, port, new short[15], new short[3]);
+            SocketPostman socketPostman = new SocketPostman(ipAddress, port, new short[15], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
             System.out.println("Связь с сервером установлена !");
             CliRun.startListInfo(socketPostman);
-
-            while (socketPostman.isConnected()) {
-                Thread.sleep(20);
-            }
-            System.out.println("Произошел разрыв соединения!");
         }catch (Exception e){
             System.out.println("Сервер недоступен!");
         }
