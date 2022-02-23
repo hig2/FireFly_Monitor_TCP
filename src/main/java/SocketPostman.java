@@ -80,6 +80,13 @@ public class SocketPostman {
         return result;
     }
 
+    public void close() {
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void readSymbolArrayMod(byte[] buffer) throws IOException {
         t.set(System.currentTimeMillis());

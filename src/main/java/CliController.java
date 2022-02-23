@@ -44,6 +44,8 @@ public class CliController {
                 break;
             case "/стоп": directiveNum = 70;
                 break;
+            case "/выход": socketPostman.close();
+                return;
             default: return;
 
         }
