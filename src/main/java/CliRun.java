@@ -11,7 +11,9 @@ public class CliRun {
         renderThread();
     }
     public static CliRun startListInfo(SocketPostman socketPostman){
-        cliRun = new CliRun(socketPostman);
+        if(cliRun == null){
+            cliRun = new CliRun(socketPostman);
+        }
         return cliRun;
     }
 
@@ -138,14 +140,9 @@ public class CliRun {
             SocketPostman socketPostman = new SocketPostman(ipAddress, port, new short[15], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
             System.out.println("Связь с сервером установлена !");
             CliRun.startListInfo(socketPostman);
+            CliController.startCliController(socketPostman);
         }catch (Exception e){
             System.out.println("Сервер недоступен!");
         }
     }
 }
-
-/*
- if (scanner.hasNextLine()) {
-                    String str = scanner.nextLine();
-                }
- */
