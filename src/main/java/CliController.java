@@ -51,6 +51,7 @@ public class CliController {
         }
 
         outArray[0] = directiveNum;
+        outArray[1] = socketPostman.getInArrayLink()[8]; //костыль на удержание температуры(необходим фикс на сервере)
 
         try {
             socketPostman.writeSymbolMessage();

@@ -1,6 +1,7 @@
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 import java.io.IOException;
 
@@ -91,9 +92,9 @@ public class SocketPostman {
     private void readSymbolArrayMod(byte[] buffer) throws IOException {
         t.set(System.currentTimeMillis());
         int numByte = dataInputStream.read(buffer);
-        if(parseBuffer(buffer, numByte)){
-            dataExchange = true;
-        }
+       if(parseBuffer(buffer, numByte)){
+            
+       }
     }
 
     private void readSymbolArrayBoomerangSlaveMod(byte[] buffer) throws IOException {
@@ -129,19 +130,7 @@ public class SocketPostman {
                         case  READ_BYTE_ARRAY_BOOMERANG_MASTER: // чтение и запись (байт поток) в роли ведущего
                             break;
                     }
-                    /*
-                    t.set(System.currentTimeMillis());
-                    int numByte = dataInputStream.read(buffer);
-                    if(parseBuffer(buffer, numByte)){
-                        dataExchange = true;
-                        if(typeTask == SocketPostmanTaskTypeList.READ_BYTE_ARRAY_BOOMERANG){
-                            //операция отправки
-                        }
-                    }
-
-                     */
                 } catch (Exception e) {
-                    e.printStackTrace();
                     connectStatus = false;
                     dataExchange = false;
                 }
@@ -178,11 +167,15 @@ public class SocketPostman {
                 continue;
             } else if (buffer[i] == finishSymbol && startReadFlag) {
                 //обновляем глобальное состояние
-                inArrayUpload(globalBuffer, realByte);
-                realByte = 0;
-                startReadFlag = false;
-                indexGlobalBuffer = 0;
-                return true;
+                if(inArrayUpload(globalBuffer, realByte)){
+                    realByte = 0;
+                    startReadFlag = false;
+                    indexGlobalBuffer = 0;
+                    return true;
+                }else{
+                    return false;
+                }
+
             }
             if (startReadFlag) {
                 if (indexGlobalBuffer == globalBuffer.length) {
@@ -199,7 +192,7 @@ public class SocketPostman {
     }
 
 
-    private void inArrayUpload(byte[] buffer, int realByte) {
+    private boolean inArrayUpload(byte[] buffer, int realByte) {
         short[] bufferArray = new short[inArray.length];
 
         for (int i = 0, acc = 0, factor = 0, indexOfBufferArray = 0; i < realByte + 1; i++) {
@@ -213,7 +206,7 @@ public class SocketPostman {
                 indexOfBufferArray++;
                 if (indexOfBufferArray == (bufferArray.length)) {
                     // пришедший пакет больше ожидаемого
-                    return;
+                    return false;
                 }
                 acc = 0;
                 factor = 0;
@@ -222,7 +215,7 @@ public class SocketPostman {
                 factor = 10;
             } else {
                 // была ошибка валидности пакета
-                return;
+                return false;
             }
 
         }
@@ -237,11 +230,10 @@ public class SocketPostman {
         if (bufferArray[bufferArray.length - 1] == crc) {
             //все ок
             System.arraycopy(bufferArray, 0, inArray, 0, inArray.length);
-
-            return;
+            return true;
         } else {
             // была ошибка crc
-            return;
+            return false;
         }
     }
 

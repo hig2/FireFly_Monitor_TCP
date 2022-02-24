@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
+//$1 0 0 0 0 0 0 0 0 0 0 0 0 0 1;
+//$1 0 1 0 532 0 0 0 0 0 0 0 0 100 634;
 public class CliRun {
     private static CliRun cliRun;
     SocketPostman socketPostman;
@@ -55,7 +58,7 @@ public class CliRun {
     }
 
     private void showStatus(int status){
-        System.out.println("Статус: ");
+        System.out.print("Статус: ");
         switch (status){
             case 0: System.out.println("Ожидание.");
                 break;
@@ -77,7 +80,7 @@ public class CliRun {
         Thread thread = new Thread(() -> {
             while (socketPostman.isConnected()) {
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
