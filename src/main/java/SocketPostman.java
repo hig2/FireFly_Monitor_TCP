@@ -93,7 +93,7 @@ public class SocketPostman {
         t.set(System.currentTimeMillis());
         int numByte = dataInputStream.read(buffer);
        if(parseBuffer(buffer, numByte)){
-
+           dataExchange = true;
        }
     }
 
