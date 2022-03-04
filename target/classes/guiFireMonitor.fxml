@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <TextField fx:id="addressIP" focusTraversable="false" layoutX="55.0" layoutY="11.0" prefHeight="25.0" prefWidth="106.0" />
       <Text fx:id="fuelTemperatureSensor" layoutX="46.0" layoutY="118.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Температура топлива:" wrappingWidth="215.00000095367432">
@@ -52,7 +52,7 @@
       </Text>
       <Line endX="516.0" endY="65.5" layoutX="2.0" layoutY="-20.0" startX="27.0" startY="65.5" />
       <Line endX="537.0000610351562" endY="65.5" layoutX="-25.0" layoutY="174.0" startX="49.0" startY="65.5" />
-      <Button fx:id="saveIP" focusTraversable="false" layoutX="169.0" layoutY="11.0" mnemonicParsing="false" onAction="#pressedSaveIP" prefHeight="25.0" prefWidth="77.0" text="Сохранить" />
+      <Button fx:id="saveIPButton" focusTraversable="false" layoutX="169.0" layoutY="11.0" mnemonicParsing="false" onAction="#pressedSaveIPButton" prefHeight="25.0" prefWidth="77.0" text="Сохранить" />
       <Text fx:id="statusData" layoutX="152.0" layoutY="71.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="215.00000507099776">
          <font>
             <Font name="Bernard MT Condensed" size="15.0" />

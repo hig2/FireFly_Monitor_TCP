@@ -42,6 +42,10 @@ public class SocketPostman {
         startTask();
     }
 
+    public final String getAddressIP(){
+        return String.valueOf(client.getInetAddress());
+    }
+
     public final boolean isConnected() {
         return connectStatus;
     }

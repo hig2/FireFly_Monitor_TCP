@@ -28,7 +28,6 @@ public class CliRun {
         System.out.println("Время: " + formatDateTime);
     }
 
-
     private void showErrorStatus(int errorCode){
         System.out.print("Ошибка №"+ errorCode + ": ");
         switch (errorCode){
