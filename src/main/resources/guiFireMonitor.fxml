@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <TextField fx:id="addressIP" focusTraversable="false" layoutX="55.0" layoutY="11.0" prefHeight="25.0" prefWidth="106.0" />
+      <TextField fx:id="addressIPTextField" focusTraversable="false" layoutX="55.0" layoutY="11.0" prefHeight="25.0" prefWidth="106.0" />
       <Text fx:id="fuelTemperatureSensor" layoutX="46.0" layoutY="118.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Температура топлива:" wrappingWidth="215.00000095367432">
          <font>
             <Font name="Bernard MT Condensed" size="18.0" />
@@ -95,10 +95,10 @@
       </Text>
       <Button fx:id="stopButton" focusTraversable="false" layoutX="227.0" layoutY="279.0" mnemonicParsing="false" onAction="#pressedStopButton" prefHeight="25.0" prefWidth="97.0" text="Остановить" />
       <Button fx:id="rebootButton" focusTraversable="false" layoutX="228.0" layoutY="248.0" mnemonicParsing="false" onAction="#pressedRebootButton" text="Перезагрузить" />
-      <Text layoutX="285.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Адресс сервера:" wrappingWidth="106.2734375" />
-      <Text layoutX="284.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Статус подключения:" wrappingWidth="139.2734375" />
-      <Text layoutX="383.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="127.0.0.1:1801" wrappingWidth="106.2734375" />
-      <Text layoutX="408.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="подключение...." wrappingWidth="106.2734375">
+      <Text layoutX="255.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Адресс сервера:" wrappingWidth="106.2734375" />
+      <Text layoutX="255.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Статус подключения:" wrappingWidth="139.2734375" />
+      <Text fx:id="connectAddressIP" layoutX="349.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="127.0.0.1:1801" wrappingWidth="106.2734375" />
+      <Text fx:id="connectStatus" layoutX="380.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="подключение...." wrappingWidth="150.00000381469727">
          <font>
             <Font name="System Italic" size="12.0" />
          </font></Text>

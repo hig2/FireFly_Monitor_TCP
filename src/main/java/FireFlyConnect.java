@@ -1,11 +1,7 @@
 import java.io.IOException;
 
 public class FireFlyConnect {
-    private static final String messageConnect_Connecting = "Подключение к серверу.";
-    private static final String messageConnect_Connected = "Подключен.";
-    private static final String messageExchange_NotExchange = "Устанавливаем обмен.";
-    private static final String messageConnect_NotConnected = "Сервер не доступен!";
-    private static final String messageNotData = "нет данных.";
+    private static int connectStatus = 0;
     private static String messageCurrentStatus;
     private final static int port = 1801;
     private static SocketPostman serverConnect;
@@ -18,20 +14,28 @@ public class FireFlyConnect {
         autoReconnect();
     }
 
-    public final String getAddressIP(){
+    public static int getPort() {
+        return port;
+    }
+
+    public final short[] getInArrayLink(){
+        return serverConnect.getInArrayLink();
+    }
+
+    public final String getAddressIP() {
         return serverConnect.getAddressIP();
     }
 
-    public static void connect(String addressIP){
-        Thread connectingThread = new Thread(()->{
-            do{
+    public static void connect(String addressIP) {
+        Thread connectingThread = new Thread(() -> {
+            do {
                 try {
-                    messageCurrentStatus = messageConnect_Connecting;
+                    connectStatus = 0;
                     serverConnect = new SocketPostman(addressIP, port, new short[12], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
-                }catch (Exception e){
-                    messageCurrentStatus = messageConnect_NotConnected;
+                } catch (Exception e) {
+                    connectStatus = 4; // messageCurrentStatus = messageConnect_NotConnected;
                 }
-            }while(serverConnect == null || !serverConnect.isConnected());
+            } while (serverConnect == null || !serverConnect.isConnected());
             try {
                 fireFlyConnect = new FireFlyConnect();
             } catch (IOException e) {
@@ -41,20 +45,24 @@ public class FireFlyConnect {
         connectingThread.start();
     }
 
-    public final void setStopCommand(){
+    public final void close() {
+        serverConnect.close();
+    }
+
+    public final void setStopCommand() {
         sendMessage(70);
     }
 
-    public final void setRestartCommand(){
+    public final void setRestartCommand() {
         sendMessage(69);
     }
 
-    public final void setOpenDirCommand(int numDir){
+    public final void setOpenDirCommand(int numDir) {
         sendMessage(numDir);
     }
 
-    private void sendMessage(int numDir){
-        serverConnect.getOutArrayLink()[0] = (short)numDir;
+    private void sendMessage(int numDir) {
+        serverConnect.getOutArrayLink()[0] = (short) numDir;
         serverConnect.getOutArrayLink()[1] = serverConnect.getInArrayLink()[8]; //костыль на удержание температуры(необходим фикс на сервере)
         try {
             serverConnect.writeSymbolMessage();
@@ -63,21 +71,21 @@ public class FireFlyConnect {
         }
     }
 
-    public final boolean isConnected(){
+    public final boolean isConnected() {
         return serverConnect.isConnected();
     }
 
-    private void autoReconnect(){
+    private void autoReconnect() {
         int delay = 100;
-        Thread autoReconnectThread = new Thread(()->{
-            while (true){
+        Thread autoReconnectThread = new Thread(() -> {
+            while (true) {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                if(!serverConnect.isConnected()){
+                if (!serverConnect.isConnected()) {
                     FireFlyConnect.connect(getAddressIP());
                     break;
                 }
@@ -88,9 +96,9 @@ public class FireFlyConnect {
     }
 
 
-    private void connectStatusWatcher(){
-        Thread connectStatusWatcherThread = new Thread(()->{
-            while(serverConnect.isConnected()){
+    private void connectStatusWatcher() {
+        Thread connectStatusWatcherThread = new Thread(() -> {
+            while (serverConnect.isConnected()) {
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
@@ -98,14 +106,14 @@ public class FireFlyConnect {
 
                 }
 
-                if(serverConnect.isConnected()){
-                    if(serverConnect.isDataExchange()){
-                        messageCurrentStatus = messageConnect_Connected;
-                    }else{
-                        messageCurrentStatus = messageExchange_NotExchange;
+                if (serverConnect.isConnected()) {
+                    if (serverConnect.isDataExchange()) {
+                        connectStatus = 1;
+                    } else {
+                        connectStatus = 2;
                     }
-                }else{
-                    messageCurrentStatus = messageConnect_NotConnected;
+                } else {
+                    connectStatus = 3;
                 }
 
             }
@@ -113,16 +121,19 @@ public class FireFlyConnect {
         connectStatusWatcherThread.start();
     }
 
+    public static int getConnectStatus(){
+        return connectStatus;
+    }
 
-    public static FireFlyConnect getFireFlyConnect(){
+    public static FireFlyConnect getFireFlyConnect() {
         return fireFlyConnect;
     }
 
-    public String getVersion(){
+    public String getVersion() {
         return version;
     }
 
-    public static String getMessageCurrentStatus(){
+    public static String getMessageCurrentStatus() {
         return messageCurrentStatus;
     }
 

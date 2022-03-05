@@ -21,7 +21,6 @@ public class FireFlyMonitor extends Application{
     @Override
     public void start(Stage primaryStage) {
         try {
-            ConfigFile.getIP();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass()
                     .getResource("guiFireMonitor.fxml")));
             primaryStage.setTitle("Fire Fly Monitor v1.0");
@@ -29,8 +28,6 @@ public class FireFlyMonitor extends Application{
             //primaryStage.getIcons().add(new Image("picture/favicon.png"));
             primaryStage.setResizable(false);
             primaryStage.show();
-            //FireFlyConnect.connect("192.168.2.100");
-
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {

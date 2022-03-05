@@ -16,6 +16,7 @@ public class SocketPostman {
     private final DataInputStream dataInputStream;
     private final DataOutputStream dataOutputStream;
     private int timeOutToWriteMessage = 1000;
+    private String addressIP;
 
     private boolean connectStatus = false;
     private boolean dataExchange = false;
@@ -30,11 +31,12 @@ public class SocketPostman {
     private boolean startReadFlag = false;
     private int realByte = 0;
 
-    public SocketPostman(String ipAddress, int port, short[] inArray, short[] outArray, SocketPostmanTaskTypeList typeTask) throws IOException {
+    public SocketPostman(String addressIP, int port, short[] inArray, short[] outArray, SocketPostmanTaskTypeList typeTask) throws IOException {
+        this.addressIP = addressIP;
         this.inArray = inArray;
         this.outArray = outArray;
         globalBuffer = new byte[inArray.length * 10]; // динамический рост буффера относительно длины входного пакета
-        client = new Socket(ipAddress, port);
+        client = new Socket(addressIP, port);
         connectStatus = true;
         this.typeTask = typeTask;
         dataInputStream = new DataInputStream(client.getInputStream());
@@ -43,14 +45,15 @@ public class SocketPostman {
     }
 
     public final String getAddressIP(){
-        return String.valueOf(client.getInetAddress());
+        return addressIP;
     }
+
 
     public final boolean isConnected() {
         return connectStatus;
     }
 
-    public final  boolean isDataExchange(){
+    public final boolean isDataExchange(){
         return dataExchange;
     }
 
