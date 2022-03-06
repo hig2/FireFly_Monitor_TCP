@@ -67,6 +67,7 @@ public class FireFlyConnect {
         try {
             serverConnect.writeSymbolMessage();
         } catch (IOException e) {
+            System.out.println("Не отправлено!");
             //e.printStackTrace();
         }
     }
@@ -74,6 +75,7 @@ public class FireFlyConnect {
     public final boolean isConnected() {
         return serverConnect.isConnected();
     }
+    public final boolean isDataExchange(){return serverConnect.isDataExchange();}
 
     private void autoReconnect() {
         int delay = 100;

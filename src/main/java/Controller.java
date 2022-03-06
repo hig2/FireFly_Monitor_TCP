@@ -26,6 +26,8 @@ public class Controller implements Initializable {
     @FXML
     private TextField addressIPTextField;
 
+    @FXML
+    private Text statusData;
 
     @FXML
     private Text errorData;
@@ -106,17 +108,14 @@ public class Controller implements Initializable {
 
                 showConnectStatus();
                 showAddress();
-
-                try {
-                    /*
-                    if(FireFlyConnect.getMessageCurrentStatus() != null && FireFlyConnect.getFireFlyConnect().isConnected()){
-
-                    }
-
-                     */
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                showFireFlyStatus();
+                showErrorStatus();
+                showFuelTemperatureSensor();
+                showDepulsatorLevelSensor();
+                showBufferTankLevelSensor();
+                showFireSensor();
+                showHoldingFuelTemperature();
+                showSoftWareVersion();
 
             }
         });
@@ -129,61 +128,138 @@ public class Controller implements Initializable {
 
 
     private void showErrorStatus() {
-        switch (FireFlyConnect.getFireFlyConnect().getInArrayLink()[7]) {
-            case 0:
-                errorData.setText("Нет ошибки.");
-                break;
-            case 1:
-                errorData.setText("Не удалось расжечь.");
-                break;
-            case 2:
-                errorData.setText("Не удалось заполнить бак топливом.");
-                break;
-            case 3:
-                errorData.setText("Перегрев топлива.");
-                break;
-            case 4:
-                errorData.setText("Блокировка.");
-                break;
-            case 5:
-                errorData.setText("Клин двигателя внутреннего насоса.");
-                break;
-            case 6:
-                errorData.setText("Разрыв обменна данными с пультом.");
-                break;
-            case 7:
-                errorData.setText("Обрыв датчика температуры котла.");
-                break;
-            default:
-                errorData.setText("Не определена.");
-                break;
+        if(isCanRenderData()) {
+            switch (FireFlyConnect.getFireFlyConnect().getInArrayLink()[7]) {
+                case 0:
+                    errorData.setText("Нет ошибки.");
+                    break;
+                case 1:
+                    errorData.setText("Не удалось расжечь.");
+                    break;
+                case 2:
+                    errorData.setText("Не удалось заполнить бак топливом.");
+                    break;
+                case 3:
+                    errorData.setText("Перегрев топлива.");
+                    break;
+                case 4:
+                    errorData.setText("Блокировка.");
+                    break;
+                case 5:
+                    errorData.setText("Клин двигателя внутреннего насоса.");
+                    break;
+                case 6:
+                    errorData.setText("Разрыв обменна данными с пультом.");
+                    break;
+                case 7:
+                    errorData.setText("Обрыв датчика температуры котла.");
+                    break;
+                default:
+                    errorData.setText("Не определена.");
+                    break;
+            }
+        }else{
+            errorData.setText("нет данных.");
         }
     }
 
     private void showConnectStatus() {
-        switch (FireFlyConnect.getConnectStatus()) {
-            case 0:
-                connectStatus.setFill(Color.ORANGE);
-                connectStatus.setText("Подключение к серверу.");
-                break;
-            case 1:
-                connectStatus.setFill(Color.GREEN);
-                connectStatus.setText("Подключен.");
-                break;
-            case 2:
-                connectStatus.setFill(Color.ORANGE);
-                connectStatus.setText("Устанавливаем обмен.");
-                break;
-            case 3:
-                connectStatus.setFill(Color.RED);
-                connectStatus.setText("Сервер не доступен!");
-                break;
-            default:
-                connectStatus.setFill(Color.BLACK);
-                connectStatus.setText("Не определено");
-                break;
-        }
+            switch (FireFlyConnect.getConnectStatus()) {
+                case 0:
+                    connectStatus.setFill(Color.ORANGE);
+                    connectStatus.setText("Подключение к серверу.");
+                    break;
+                case 1:
+                    connectStatus.setFill(Color.GREEN);
+                    connectStatus.setText("Подключен.");
+                    break;
+                case 2:
+                    connectStatus.setFill(Color.ORANGE);
+                    connectStatus.setText("Устанавливаем обмен.");
+                    break;
+                case 3:
+                    connectStatus.setFill(Color.RED);
+                    connectStatus.setText("Сервер не доступен!");
+                    break;
+                default:
+                    connectStatus.setFill(Color.BLACK);
+                    connectStatus.setText("Не определено");
+                    break;
+            }
 
     }
 
+    private void showFireFlyStatus(){
+        if(isCanRenderData()) {
+            switch (FireFlyConnect.getFireFlyConnect().getInArrayLink()[0]) {
+                case 0:
+                    statusData.setText("Ожидание.");
+                    break;
+                case 1:
+                    statusData.setText("Росжиг.");
+                    break;
+                case 2:
+                    statusData.setText("Горение.");
+                    break;
+                default:
+                    statusData.setText("Не определен.");
+            }
+        }else{
+            statusData.setText("нет данных.");
+        }
+    }
+
+    private void showFuelTemperatureSensor(){
+        if(isCanRenderData()) {
+            fuelTemperatureSensorData.setText(String.valueOf(FireFlyConnect.getFireFlyConnect().getInArrayLink()[1]));
+        }else{
+            fuelTemperatureSensorData.setText("нет данных.");
+        }
+    }
+
+    private void showDepulsatorLevelSensor(){
+        if(isCanRenderData()) {
+            depulsatorLevelSensorData.setText(FireFlyConnect.getFireFlyConnect().getInArrayLink()[2] == 1 ? "Накачал." : "Не накачал.");
+        }else{
+            depulsatorLevelSensorData.setText("нет данных.");
+        }
+    }
+
+    private void showBufferTankLevelSensor(){
+        if(isCanRenderData()) {
+            bufferTankLevelSensorData.setText(FireFlyConnect.getFireFlyConnect().getInArrayLink()[3] == 1 ? "Накачал." : "Не накачал.");
+        }else{
+            bufferTankLevelSensorData.setText("нет данных.");
+        }
+    }
+
+    private void showFireSensor(){
+        if(isCanRenderData()) {
+            fireSensorData.setText(FireFlyConnect.getFireFlyConnect().getInArrayLink()[4] == 1 ? "Есть пламя." : "Нет пламени.");
+        }else{
+            fireSensorData.setText("нет данных.");
+        }
+    }
+
+    private void showHoldingFuelTemperature(){
+        if(isCanRenderData()) {
+            holdingFuelTemperatureData.setText(String.valueOf(FireFlyConnect.getFireFlyConnect().getInArrayLink()[8]));
+        }else {
+            holdingFuelTemperatureData.setText("нет данных.");
+        }
+    }
+
+    private void showSoftWareVersion(){
+        if(isCanRenderData()) {
+            softWareVersionData.setText(String.valueOf(FireFlyConnect.getFireFlyConnect().getInArrayLink()[9]));
+        }else {
+            softWareVersionData.setText("нет данных.");
+        }
+    }
+
+    private boolean isCanRenderData(){
+        return (FireFlyConnect.getFireFlyConnect().isConnected() && FireFlyConnect.getFireFlyConnect().isDataExchange());
+    }
+
 }
+
