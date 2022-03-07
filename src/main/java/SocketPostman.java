@@ -1,5 +1,7 @@
 
 import java.io.*;
+import java.net.Inet4Address;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
@@ -17,6 +19,8 @@ public class SocketPostman {
     private final DataOutputStream dataOutputStream;
     private int timeOutToWriteMessage = 1000;
     private String addressIP;
+    private int port;
+    private static int numClient = 0;
 
     private boolean connectStatus = false;
     private boolean dataExchange = false;
@@ -32,6 +36,8 @@ public class SocketPostman {
     private int realByte = 0;
 
     public SocketPostman(String addressIP, int port, short[] inArray, short[] outArray, SocketPostmanTaskTypeList typeTask) throws IOException {
+
+        this.port = port;
         this.addressIP = addressIP;
         this.inArray = inArray;
         this.outArray = outArray;
@@ -42,10 +48,19 @@ public class SocketPostman {
         dataInputStream = new DataInputStream(client.getInputStream());
         dataOutputStream = new DataOutputStream(client.getOutputStream());
         startTask();
+        numClient++;
     }
 
     public final String getAddressIP(){
         return addressIP;
+    }
+
+    public int getNumClient(){
+        return numClient;
+    }
+
+    public final void reConnect(String addressIP) throws IOException {
+        client.connect(new InetSocketAddress(addressIP, port));
     }
 
 
@@ -91,6 +106,7 @@ public class SocketPostman {
     public void close() {
         try {
             client.close();
+            numClient--;
         } catch (IOException e) {
             e.printStackTrace();
         }

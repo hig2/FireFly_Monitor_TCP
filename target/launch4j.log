@@ -1,0 +1,31 @@
+
+
+Version:	3.14
+CmdLine:	C:\project\FireFly_Monitor_TCP\target\FireFlyMonitor_v1.0.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\project\FireFly_Monitor_TCP\target\.
+Java min ver:	1.008.000
+Java max ver:	
+Bundled JRE(s):	1.8
+Check launcher:	C:\project\FireFly_Monitor_TCP\target\1.8\bin\javaw.exe (not found)
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+32-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8
+Check launcher:	C:\Program Files (x86)\Java\jre1.8.0_321\bin\javaw.exe (OK)
+Match:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_321
+Check launcher:	C:\Program Files (x86)\Java\jre1.8.0_321\bin\javaw.exe (OK)
+Match:		1.008.000_321
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+32-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+64-bit search:	SOFTWARE\JavaSoft\JRE...
+32-bit search:	SOFTWARE\JavaSoft\JRE...
+64-bit search:	SOFTWARE\JavaSoft\JDK...
+32-bit search:	SOFTWARE\JavaSoft\JDK...
+Runtime used:	1.008.000_321 (32-bit)
+Main class:	FireFlyMonitor
+Info:		Classpath not defined.
+Launcher:	C:\Program Files (x86)\Java\jre1.8.0_321\bin\javaw.exe
+Launcher args:	-classpath "C:\project\FireFly_Monitor_TCP\target\FireFlyMonitor_v1.0.exe" FireFlyMonitor
+Args length:	89/32768 chars
+Exit code:	0

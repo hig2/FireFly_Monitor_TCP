@@ -87,9 +87,6 @@ public class Controller implements Initializable {
 
         if (!addressIP.equals(ConfigFile.getIP())) {
             if (ConfigFile.setIP(addressIP)) {
-                if (FireFlyConnect.getFireFlyConnect() != null) {
-                    FireFlyConnect.getFireFlyConnect().close();
-                }
                 String newAddressIP = ConfigFile.getIP();
                 FireFlyConnect.connect(newAddressIP);
                 showTextFieldIPAddress(newAddressIP);
@@ -105,7 +102,6 @@ public class Controller implements Initializable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 showConnectStatus();
                 showAddress();
                 showFireFlyStatus();
@@ -196,7 +192,7 @@ public class Controller implements Initializable {
                     statusData.setText("Ожидание.");
                     break;
                 case 1:
-                    statusData.setText("Росжиг.");
+                    statusData.setText("Розжиг.");
                     break;
                 case 2:
                     statusData.setText("Горение.");
@@ -258,7 +254,7 @@ public class Controller implements Initializable {
     }
 
     private boolean isCanRenderData(){
-        return (FireFlyConnect.getFireFlyConnect().isConnected() && FireFlyConnect.getFireFlyConnect().isDataExchange());
+        return (FireFlyConnect.getFireFlyConnect() != null && FireFlyConnect.getFireFlyConnect().isConnected() && FireFlyConnect.getFireFlyConnect().isDataExchange());
     }
 
 }

@@ -23,11 +23,12 @@ public class FireFlyMonitor extends Application{
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass()
                     .getResource("guiFireMonitor.fxml")));
-            primaryStage.setTitle("Fire Fly Monitor v1.0");
+            primaryStage.setTitle("FireFly Monitor v1.0");
             primaryStage.setScene(new Scene(root, 543, 314, Color.web("#3C3F41")));
-            //primaryStage.getIcons().add(new Image("picture/favicon.png"));
+            primaryStage.getIcons().add(new Image("pictures/favicon.png"));
             primaryStage.setResizable(false);
             primaryStage.show();
+
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {
