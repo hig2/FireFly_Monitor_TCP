@@ -91,11 +91,10 @@ public class FireFlyConnect {
     private static void autoReconnect() {
         int delay = 100;
         Thread autoReconnectThread = new Thread(() -> {
-            while (serverConnect != null) {
+            while (true) {
                 try {
                     Thread.sleep(delay);
                     if (!serverConnect.isConnected()) {
-                        FireFlyConnect.getFireFlyConnect().close();
                         FireFlyConnect.connect(getAddressIP());
                         break;
                     }
@@ -112,7 +111,7 @@ public class FireFlyConnect {
 
     private static void connectStatusWatcher() {
         Thread connectStatusWatcherThread = new Thread(() -> {
-            while (serverConnect != null) {
+            while (true) {
                 try {
                     Thread.sleep(20);
                     if (serverConnect.isConnected()) {

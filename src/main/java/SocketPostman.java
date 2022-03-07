@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 import java.io.IOException;
 
-
-
 public class SocketPostman {
     static private Socket client;
     private final short[] inArray;
@@ -36,7 +34,6 @@ public class SocketPostman {
     private int realByte = 0;
 
     public SocketPostman(String addressIP, int port, short[] inArray, short[] outArray, SocketPostmanTaskTypeList typeTask) throws IOException {
-
         this.port = port;
         this.addressIP = addressIP;
         this.inArray = inArray;
@@ -113,27 +110,25 @@ public class SocketPostman {
     }
 
     private void readSymbolArrayMod(byte[] buffer) throws IOException {
-        t.set(System.currentTimeMillis());
-        int numByte = dataInputStream.read(buffer);
+       int numByte = dataInputStream.read(buffer);
        if(parseBuffer(buffer, numByte)){
+           t.set(System.currentTimeMillis());
            dataExchange = true;
        }
     }
 
     private void readSymbolArrayBoomerangSlaveMod(byte[] buffer) throws IOException {
-        t.set(System.currentTimeMillis());
         int numByte = dataInputStream.read(buffer);
         if(parseBuffer(buffer, numByte)){
+            t.set(System.currentTimeMillis());
             dataExchange = true;
             dataOutputStream.writeUTF(getMessage());
         }
     }
 
-
-
     private void startTask() throws IOException {
         byte[] buffer = new byte[inArray.length * 10];
-        final int delay = 3500;
+        final int delay = 2500;
 
         Thread thread = new Thread(() -> {
             while (connectStatus) {
@@ -164,12 +159,19 @@ public class SocketPostman {
             while (connectStatus) {
                 try {
                     Thread.sleep(20);
+                    if((System.currentTimeMillis() - t.get()) > delay){
+                        dataExchange = false;
+                        Thread.sleep(500);
+                        try {
+                            dataOutputStream.write(null); //явный способ понять есть ли еще соединение
+                        } catch (IOException e) {
+                            connectStatus = false;
+                        }
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if((System.currentTimeMillis() - t.get()) > delay){
-                    dataExchange = false;
-                }
+
             }
         });
 
