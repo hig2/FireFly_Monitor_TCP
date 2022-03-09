@@ -12,85 +12,85 @@
       <TextField fx:id="addressIPTextField" focusTraversable="false" layoutX="55.0" layoutY="11.0" prefHeight="25.0" prefWidth="106.0" />
       <Text fx:id="fuelTemperatureSensor" layoutX="46.0" layoutY="118.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Температура топлива:" wrappingWidth="215.00000095367432">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Text fx:id="depulsatorLevelSensor" layoutX="46.0" layoutY="139.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Датчик уровня топлива депульстора:" wrappingWidth="315.0000009536743">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Text fx:id="bufferTankLevelSensor" layoutX="46.0" layoutY="160.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Датчик уровня топлива буферного бака:" wrappingWidth="361.0000009536743">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Text fx:id="fireSensor" layoutX="46.0" layoutY="181.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Датчик пламени:" wrappingWidth="361.0000009536743">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Text fx:id="holdingFuelTemperature" layoutX="46.0" layoutY="202.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Удерживаемая температура топлива:" wrappingWidth="355.0000009536743">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Text fx:id="status" layoutX="46.0" layoutY="73.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Состояние :" wrappingWidth="106.00001184642315">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Text fx:id="error" layoutX="46.0" layoutY="97.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Ошибка №:" wrappingWidth="106.27343962807208">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Text fx:id="softWareVersion" layoutX="46.0" layoutY="223.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="Версия ПО:" wrappingWidth="117.00000095367432">
          <font>
-            <Font name="Bernard MT Condensed" size="18.0" />
+            <Font name="Britannic Bold" size="18.0" />
          </font>
       </Text>
       <Line endX="516.0" endY="65.5" layoutX="2.0" layoutY="-20.0" startX="27.0" startY="65.5" />
       <Line endX="537.0000610351562" endY="65.5" layoutX="-25.0" layoutY="174.0" startX="49.0" startY="65.5" />
       <Button fx:id="saveIPButton" focusTraversable="false" layoutX="169.0" layoutY="11.0" mnemonicParsing="false" onAction="#pressedSaveIPButton" prefHeight="25.0" prefWidth="77.0" text="Сохранить" />
-      <Text fx:id="statusData" layoutX="152.0" layoutY="71.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="215.00000507099776">
+      <Text fx:id="statusData" layoutX="153.0" layoutY="72.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет данных." wrappingWidth="215.00000507099776">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="errorData" layoutX="153.0" layoutY="96.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="215.00000507099776">
+      <Text fx:id="errorData" layoutX="153.0" layoutY="96.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет данных." wrappingWidth="215.00000507099776">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Text>
       <Text fx:id="fuelTemperatureSensorData" layoutX="246.0" layoutY="117.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="215.00000507099776">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Text>
       <Text fx:id="depulsatorLevelSensorData" layoutX="368.0" layoutY="138.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="215.00000507099776">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Text>
       <Text fx:id="bufferTankLevelSensorData" layoutX="402.0" layoutY="160.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="117.00000432591878">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Text>
       <Text fx:id="softWareVersionData" layoutX="152.0" layoutY="223.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="215.00000507099776">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Text>
       <Text fx:id="holdingFuelTemperatureData" layoutX="368.0" layoutY="202.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="150.00000507099776">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Text>
       <Text fx:id="fireSensorData" layoutX="204.0" layoutY="181.0" opacity="0.85" strokeType="OUTSIDE" strokeWidth="0.0" text="нет  данных." wrappingWidth="215.00000507099776">
          <font>
-            <Font name="Bernard MT Condensed" size="15.0" />
+            <Font name="Arial" size="15.0" />
          </font>
       </Text>
       <Button fx:id="stopButton" focusTraversable="false" layoutX="227.0" layoutY="279.0" mnemonicParsing="false" onAction="#pressedStopButton" prefHeight="25.0" prefWidth="97.0" text="Остановить" />

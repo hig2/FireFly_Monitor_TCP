@@ -163,7 +163,7 @@ public class SocketPostman {
                         dataExchange = false;
                         Thread.sleep(500);
                         try {
-                            dataOutputStream.write(null); //явный способ понять есть ли еще соединение
+                            dataOutputStream.write(0); //явный способ понять есть ли еще соединение
                         } catch (IOException e) {
                             connectStatus = false;
                         }
